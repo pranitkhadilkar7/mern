@@ -1,5 +1,9 @@
-import React from "react"
+import { PageRoutes } from "./routes/PageRoutes"
 
 export function App() {
-  return <h1>Hii From React!!</h1>
+  return (
+    <>
+      <PageRoutes />
+    </>
+  )
 }
