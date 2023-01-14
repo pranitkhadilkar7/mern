@@ -1,0 +1,15 @@
+.toast {
+  background-color: transparent;
+  .toast__header {
+    background-color: #ff0055;
+    color: #fff;
+    border-bottom: none;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+  }
+  .toast__body {
+    background-color: #292929;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+  }
+}
