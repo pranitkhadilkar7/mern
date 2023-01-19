@@ -12,10 +12,14 @@ app.use(bodyParser.json())
 
 app.use("/places", placesRoutes)
 
+app.use((req, res, next) => {
+  throw new HttpError("Could not find the route", 404)
+})
+
 app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
   res.status(err.statusCode || 500).json({
     message: err.message || "Something went wrong. Please type again.",
   })
 })
 
-app.listen(3000)
+app.listen(5000)

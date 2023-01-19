@@ -3,7 +3,7 @@ import { HttpError } from "../models/http-error"
 import { Place } from "../types/places-types"
 import { v4 } from "uuid"
 
-const DUMMY_PLACES: Place[] = [
+let DUMMY_PLACES: Place[] = [
   {
     id: "p1",
     title: "Empire State Building",
@@ -56,4 +56,44 @@ export function createPlace(
   res
     .status(201)
     .json({ message: "Place created successfully!", place: createdPlace })
+}
+
+export function updatePlace(
+  req: Request<
+    {
+      pid: string
+    },
+    any,
+    Pick<Place, "title" | "description">
+  >,
+  res: Response,
+  next: NextFunction
+) {
+  const { title, description } = req.body
+  const placeId = req.params.pid
+  const placeIndex = DUMMY_PLACES.findIndex((place) => place.id === placeId)
+  if (placeIndex < 0) {
+    throw new HttpError(`Can not find the place with id ${placeId}`, 404)
+  }
+  const updatedPlace = { ...DUMMY_PLACES[placeIndex] }
+  updatedPlace.title = title
+  updatedPlace.description = description
+  DUMMY_PLACES[placeIndex] = updatedPlace
+  res.status(200).json({ place: updatedPlace })
+}
+
+export function deletePlace(
+  req: Request<
+    {
+      pid: string
+    },
+    any,
+    any
+  >,
+  res: Response,
+  next: NextFunction
+) {
+  const placeId = req.params.pid
+  DUMMY_PLACES = DUMMY_PLACES.filter((place) => place.id !== placeId)
+  res.status(200).json({ message: "Deleted place" })
 }
