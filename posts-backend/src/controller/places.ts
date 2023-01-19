@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express"
+import { Request, Response } from "express"
 import { HttpError } from "../models/http-error"
 import { Place } from "../types/places-types"
 import { v4 } from "uuid"
@@ -21,8 +21,7 @@ export function getPlaceById(
   req: Request<{
     pid: string
   }>,
-  res: Response,
-  next: NextFunction
+  res: Response
 ) {
   const placeId = req.params.pid
   const place = DUMMY_PLACES.find((place) => place.id === placeId)
@@ -32,23 +31,21 @@ export function getPlaceById(
   throw new HttpError("Could not find a place for the provided id", 404)
 }
 
-export function getPlaceByCreatorId(
+export function getPlacesByCreatorId(
   req: Request<{ uid: string }>,
-  res: Response,
-  next: NextFunction
+  res: Response
 ) {
   const userId = req.params.uid
-  const place = DUMMY_PLACES.find((place) => place.creator === userId)
-  if (place) {
-    return res.status(200).json({ message: "Found place for user", place })
+  const places = DUMMY_PLACES.filter((place) => place.creator === userId)
+  if (places.length) {
+    return res.status(200).json({ message: "Found place for user", places })
   }
   throw new HttpError("Could not find a place for the provided user id", 404)
 }
 
 export function createPlace(
   req: Request<any, any, Omit<Place, "id">>,
-  res: Response,
-  next: NextFunction
+  res: Response
 ) {
   const place = req.body
   const createdPlace = { ...place, id: v4() }
@@ -66,8 +63,7 @@ export function updatePlace(
     any,
     Pick<Place, "title" | "description">
   >,
-  res: Response,
-  next: NextFunction
+  res: Response
 ) {
   const { title, description } = req.body
   const placeId = req.params.pid
@@ -90,8 +86,7 @@ export function deletePlace(
     any,
     any
   >,
-  res: Response,
-  next: NextFunction
+  res: Response
 ) {
   const placeId = req.params.pid
   DUMMY_PLACES = DUMMY_PLACES.filter((place) => place.id !== placeId)

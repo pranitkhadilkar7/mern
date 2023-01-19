@@ -2,7 +2,7 @@ import { Router } from "express"
 import {
   createPlace,
   deletePlace,
-  getPlaceByCreatorId,
+  getPlacesByCreatorId,
   getPlaceById,
   updatePlace,
 } from "../controller/places"
@@ -11,7 +11,7 @@ export const placesRoutes = Router()
 
 placesRoutes.get("/:pid", getPlaceById)
 
-placesRoutes.get("/user/:uid", getPlaceByCreatorId)
+placesRoutes.get("/user/:uid", getPlacesByCreatorId)
 
 placesRoutes.post("/", createPlace)
 

@@ -12,7 +12,7 @@ app.use(bodyParser.json())
 
 app.use("/places", placesRoutes)
 
-app.use((req, res, next) => {
+app.use(() => {
   throw new HttpError("Could not find the route", 404)
 })
 
